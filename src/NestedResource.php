@@ -59,14 +59,14 @@ abstract class NestedResource extends Resource
                 $prefix .= $parent->urlPart.'/{'.$parent->urlPlaceholder.'}/';
             }
 
-            Route::name("$slug.")
-                ->prefix($prefix.$slug)
-                ->middleware(static::getMiddlewares())
-                ->group(function () {
-                    foreach (static::getPages() as $name => $page) {
-                        Route::get($page['route'], $page['class'])->name($name);
-                    }
-                });
+			foreach (static::getPages() as $name => $page) {
+				Route::name("$slug.")
+					->prefix($page['prefix'] ?? $prefix . $slug) // With custom prefix - FIXME: We need to find a cleaner way
+					->middleware(static::getMiddlewares())
+					->group(function () use ($name, $page) {
+						Route::get($page['route'], $page['class'])->name($name);
+					});
+			}
         };
     }
 
