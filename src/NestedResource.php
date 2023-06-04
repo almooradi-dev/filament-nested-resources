@@ -92,7 +92,12 @@ abstract class NestedResource extends Resource
             $params[Str::singular($resource::getSlug())] = $childParams['record'];
         }
 
-        return parent::getUrl($name, [...$childParams, ...$params], $isAbsolute);
+        // FIXME: This "try-catch" is set because when we change the "form" language (localeSwitcher), an error happens "missing route parameters"
+        try {
+            return parent::getUrl($name, [...$params, ...$childParams], $isAbsolute);
+        } catch (Exception $e) {
+            return '#';
+        }
     }
 
     /**
