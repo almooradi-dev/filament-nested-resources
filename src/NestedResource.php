@@ -3,6 +3,7 @@
 namespace SevendaysDigital\FilamentNestedResources;
 
 use Closure;
+use Exception;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
