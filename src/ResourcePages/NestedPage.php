@@ -160,7 +160,7 @@ trait NestedPage
         /** @var NestedResource $resource */
         $resource = $this::getResource();
 
-        $parent = Str::camel(Str::afterLast($resource::getParent()::getModel(), '\\'));
+        $parent = method_exists($resource, 'getParentRouteParameterName') ? $resource::getParentRouteParameterName() : Str::camel(Str::afterLast($resource::getParent()::getModel(), '\\'));
 
         if ($this->urlParameters[$parent] instanceof Model) {
             return $this->urlParameters[$parent]->getKey();
