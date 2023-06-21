@@ -2,12 +2,17 @@
 
 namespace SevendaysDigital\FilamentNestedResources\Columns;
 
+use Filament\Support\Actions\Concerns\HasGroupedIcon;
+use Filament\Support\Actions\Contracts\Groupable;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use SevendaysDigital\FilamentNestedResources\NestedResource;
 
-class ChildResourceLink extends TextColumn
+class ChildResourceLink extends TextColumn implements Groupable
 {
+    use HasGroupedIcon;
+
     /**
      * @var NestedResource
      */
@@ -55,7 +60,7 @@ class ChildResourceLink extends TextColumn
         if (property_exists($this->table->getLivewire(), 'urlParameters')) {
             $baseParams = $this->table->getLivewire()->urlParameters;
         }
-
+        
 		$param = Str::camel(Str::singular($this->resourceClass::getParent()::getSlug()));
 
         return $this->resourceClass::getUrl(
@@ -67,5 +72,25 @@ class ChildResourceLink extends TextColumn
     private function getCount(): int
     {
         return $this->resourceClass::getEloquentQuery($this->record->getKey())->count();
+    }
+
+    public function grouped(): static
+    {
+        $this->view('vendor.filament.tables.actions.grouped-action');
+
+        return $this;
+    }
+
+    /**
+     * Used to override the function in "HasRecord" trait, because it throw an error when using "actions group"
+     *
+     * @param Model|null $record
+     * @return static
+     */
+    public function record(Model $record = null): static
+    {
+        $this->record = $record;
+
+        return $this;
     }
 }
