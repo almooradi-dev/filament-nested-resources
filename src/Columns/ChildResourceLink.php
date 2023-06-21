@@ -74,6 +74,15 @@ class ChildResourceLink extends TextColumn implements Groupable
         return $this->resourceClass::getEloquentQuery($this->record->getKey())->count();
     }
 
+    /**
+     * Group actions
+     * 
+     * We need also to create new "view file" (resources\views\vendor\filament\tables\actions\grouped-action.blade.php)
+     * contains the content of "vendor\sevendays-digital\filament-nested-resources\src\Table\Actions\Resources\Views\Actions\grouped-action.blade.php"
+     * until we make it directly from package files
+     *
+     * @return static
+     */
     public function grouped(): static
     {
         $this->view('vendor.filament.tables.actions.grouped-action');
@@ -84,9 +93,6 @@ class ChildResourceLink extends TextColumn implements Groupable
     /**
      * Used to override the function in "HasRecord" trait, because it throw an error when using "actions group"
      *
-     * We need also to create new "view file" (resources\views\vendor\filament\tables\actions\grouped-action.blade.php)
-     * contains the content of "vendor\sevendays-digital\filament-nested-resources\src\Table\Actions\Resources\Views\Actions\grouped-action.blade.php"
-     * 
      * @param Model|null $record
      * @return static
      */
